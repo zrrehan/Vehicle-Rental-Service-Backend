@@ -1,11 +1,20 @@
 import express, { Request, Response } from "express";
 import { config } from "./config";
+import { userRouter } from "./modules/users/users.routes";
+import { initialDatabase } from "./config/db";
+import { authRouter } from "./modules/auth/auth.routes";
 const app = express()
 const port = config.PORT
 
-app.get('/', (req: Request, res: Response) => {
-  res.send(`Hello World, JS! ${config.PORT}` )
-})
+// parser 
+app.use(express.json());
+
+// db initialization 
+initialDatabase();
+
+app.use("/api/v1/auth", authRouter);
+app.use("/users", userRouter);
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
