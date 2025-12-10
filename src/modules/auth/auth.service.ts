@@ -1,5 +1,7 @@
 import { pool } from "../../config/db"
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { config } from "../../config";
 
 const serviceCreateUser = async (name: string, email: string, password: string, phone: string, role: string) => {
     if(password.length < 6) {
@@ -39,10 +41,14 @@ const loginUser = async(email: string, password: string) => {
     if(!passMatched) {
         return {success: false, message: "Wrong Passoword"}
     }
-
+    const {password: string, ...userInfoWithoutPassword} = result.rows[0];
+    const token = jwt.sign(userInfoWithoutPassword, config.JWT_SECRET_KEY || "", {
+        expiresIn: "7d"
+    })
     return {
         success: true,
-        userInfo: result.rows[0] 
+        userInfo: userInfoWithoutPassword, 
+        token: token 
     }
 }
 

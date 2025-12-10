@@ -3,6 +3,7 @@ import { config } from "./config";
 import { userRouter } from "./modules/users/users.routes";
 import { initialDatabase } from "./config/db";
 import { authRouter } from "./modules/auth/auth.routes";
+import { auth } from "./middleware/auth";
 const app = express()
 const port = config.PORT
 
