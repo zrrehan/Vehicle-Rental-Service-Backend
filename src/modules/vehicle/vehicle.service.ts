@@ -11,10 +11,7 @@ type VehicleData = {
 const service_addVehicle = async(payload: VehicleData) => {
     const {vehicle_name, type, registration_number, daily_rent_price, availability_status} = payload;
     if(!["available", "booked"].includes(availability_status)) {
-        return {
-            success: false, 
-            message: "availability_status will be 'available' or 'booked'"
-        }
+        throw new Error("availability_status will be 'available' or 'booked'");
     }
     const query = `
         INSERT INTO 
