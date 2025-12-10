@@ -79,9 +79,15 @@ const service_updateVehcle = async(vehicleId: number, payload: VehicleUpdatePayl
     return result.rows;
 }
 
+const serviceDeleteVehicle = async(vehicleid: number) => {
+    const query = "DELETE FROM VEHICLE WHERE id = $1 RETURNING *";
+    const result = pool.query(query, [vehicleid]);
+}
+
 export const vehicleServices = {
     service_addVehicle, 
     getAllVehicle, 
     service_getSingleVehicle, 
-    service_updateVehcle
+    service_updateVehcle, 
+    serviceDeleteVehicle
 }
