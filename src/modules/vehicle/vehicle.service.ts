@@ -39,8 +39,49 @@ const service_getSingleVehicle = async(vehicleId: number) => {
     return result.rows;
 }
 
+
+type VehicleUpdatePayload = {
+    vehicle_name?: string;
+    type?: string;
+    registration_number?: string;
+    daily_rent_price?: number;
+    availability_status?: string;
+
+}
+const service_updateVehcle = async(vehicleId: number, payload: VehicleUpdatePayload) => {
+    let query = "UPDATE vehicle SET ";
+
+    // prventing SQL injection
+    const payloadKeys = [
+        "vehicle_name",
+        "type",
+        "registration_number",
+        "daily_rent_price",
+        "availability_status",
+    ]
+    for(const key in payload) {
+        if(!payloadKeys.includes(key)) {
+            throw new Error("One or more request parameters are not allowed.")
+        }
+    }
+
+    // creating Query Dynamically and safely 
+    let index = 1;
+    for(const key in payload) {
+        query += `${key} = $${index}, `;
+        index += 1;
+    }
+    query = query.slice(0, query.length - 2)
+    query += ` WHERE id = $${index} RETURNING *`;
+
+
+    const result = await pool.query(query, [...Object.values(payload), vehicleId]);
+    return result.rows;
+}
+
 export const vehicleServices = {
     service_addVehicle, 
     getAllVehicle, 
-    service_getSingleVehicle
+    service_getSingleVehicle, 
+    service_updateVehcle
 }

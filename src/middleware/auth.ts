@@ -12,7 +12,7 @@ export const auth = (roles: string[]) => {
 
         if(roles.length) {
             if(!roles.includes(decodedToken.role)) {
-                return res.status(403).send({message: "You are not authorized"})
+                return res.status(403).send({success: false, message: "You are not authorized"})
             }
         }
         next();
