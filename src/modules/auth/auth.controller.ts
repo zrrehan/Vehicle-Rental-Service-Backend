@@ -7,6 +7,13 @@ const createNewUser = async(req: Request, res: Response) => {
     res.send(result);
 }
 
+const loginUser = async(req: Request, res: Response) => {
+    const {email, password} = req.body;
+    const result = await authServices.loginUser(email, password);
+    res.send(result);
+}
+
 export const authController = {
-    createNewUser
+    createNewUser, 
+    loginUser
 }
