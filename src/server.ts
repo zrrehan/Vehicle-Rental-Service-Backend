@@ -4,6 +4,7 @@ import { userRouter } from "./modules/users/users.routes";
 import { initialDatabase } from "./config/db";
 import { authRouter } from "./modules/auth/auth.routes";
 import { auth } from "./middleware/auth";
+import { vehicleRouter } from "./modules/vehicle/vehicle.routes";
 const app = express()
 const port = config.PORT
 
@@ -14,6 +15,7 @@ app.use(express.json());
 initialDatabase();
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/vehicles", vehicleRouter)
 app.use("/users", userRouter);
 
 
