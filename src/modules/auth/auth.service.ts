@@ -15,7 +15,7 @@ const serviceCreateUser = async (name: string, email: string, password: string, 
             INSERT INTO 
             users(name, email, password, phone, role)
             VALUES($1, $2, $3, $4, $5)
-            RETURNING *
+            RETURNING id, name, email, phone, role
         `
         const result = await pool.query(query, [name, email, hashedPass, phone, role]);
         

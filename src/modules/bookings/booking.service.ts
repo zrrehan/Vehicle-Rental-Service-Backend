@@ -1,6 +1,8 @@
 import { Result } from "pg";
 import { pool } from "../../config/db";
 import { vehicleController } from "../vehicle/vehicle.controller";
+import { JwtPayload } from "jsonwebtoken";
+import { bookingsRouter } from "./bookings.routes";
 
 type ServiceGiveBookingPayload = {
     customer_id: number, 
@@ -73,6 +75,44 @@ const serviceShowServices = async(userInfo: any) => {
     }
 }
 
+const serviceBookingStatus = async() => {
+    const currentTime = new Date().getTime();
+    const query = "SELECT * FROM bookings";
+    const result = await pool.query(query);
+
+    for(let singleBooking of result.rows) {
+        const endTime = new Date(singleBooking.rent_end_date).getTime();
+        if(endTime < currentTime) {
+            await pool.query("UPDATE bookings SET status = 'returned' WHERE id = $1", [singleBooking.id]);
+            await pool.query("UPDATE vehicle SET availability_status = 'available' where id = $1", [singleBooking.vehicle_id]);
+        }
+    }
+}
+
+const serviceEditStatusByUser = async(bookingId: number, userInfo: JwtPayload) => {
+    let status;
+    if(userInfo.role === "admin") {
+        status = "returned";
+    } else {
+        status = "cancelled";
+    }
+    const getResult = await pool.query("SELECT * FROM bookings WHERE id = $1", [bookingId]);
+    if(getResult.rows[0].status === "available") {
+        throw new Error("This vehicle is already cancelled/returned");
+    }
+    
+
+    if(userInfo.role === "customer") {
+        let currentDate = new Date().getTime();
+        if(currentDate >= new Date(getResult.rows[0].rent_start_date).getTime()) {
+            throw new Error("Cancellation is not allowed after the rental period has begun");
+        }
+    }
+    const result = await pool.query("UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *", [status, bookingId]);
+    await pool.query("UPDATE vehicle SET availability_status = 'available' where id = $1", [result.rows[0].vehicle_id]);
+    return result.rows[0];
+}
+
 export const bookingService = {
-    serviceGiveBooking, serviceShowServices
+    serviceGiveBooking, serviceShowServices, serviceBookingStatus, serviceEditStatusByUser
 }
