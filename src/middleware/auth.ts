@@ -18,6 +18,8 @@ export const auth = (roles: string[]) => {
                 return res.status(403).send({success: false, message: "You are not authorized"})
             }
         }
+
+        req.userInfo = decodedToken;
         next();
     }
 }
