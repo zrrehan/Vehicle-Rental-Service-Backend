@@ -7,6 +7,13 @@ const serviceGetAllUser = async() => {
 }
 
 const serviceDeleteUser = async(userId: number) => {
+    const getQuery = "SELECT * FROM bookings WHERE customer_id = $1 and status = $2";
+    const getResult = await pool.query(getQuery, [userId, "active"]);
+
+    if(getResult.rows.length !== 0) {
+        throw new Error("This user has active bookings");
+    }
+ 
     const query = "DELETE FROM users WHERE id = $1 RETURNING *";
     const result = pool.query(query, [userId]);
     return result;

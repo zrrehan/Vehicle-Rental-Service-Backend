@@ -80,6 +80,13 @@ const service_updateVehcle = async(vehicleId: number, payload: VehicleUpdatePayl
 }
 
 const serviceDeleteVehicle = async(vehicleid: number) => {
+    const getQuery = "SELECT * FROM bookings WHERE vehicle_id = $1 and status = $2";
+    const getResult = await pool.query(getQuery, [vehicleid, "active"]);
+
+    if(getResult.rows.length !== 0) {
+        throw new Error("This vehicle has active bookings");
+    }
+    
     const query = "DELETE FROM VEHICLE WHERE id = $1 RETURNING *";
     const result = pool.query(query, [vehicleid]);
 }
