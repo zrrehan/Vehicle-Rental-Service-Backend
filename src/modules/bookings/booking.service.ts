@@ -61,6 +61,18 @@ const serviceGiveBooking = async(payload: ServiceGiveBookingPayload) => {
 
 }
 
+const serviceShowServices = async(userInfo: any) => {
+    if(userInfo.role === "admin") {
+        const query = `SELECT * FROM bookings`;
+        const result = await pool.query(query);
+        return result.rows;
+    } else {
+        const query = "SELECT * FROM bookings WHERE customer_id = $1";
+        const result = await pool.query(query, [userInfo.id]);
+        return result.rows;
+    }
+}
+
 export const bookingService = {
-    serviceGiveBooking
+    serviceGiveBooking, serviceShowServices
 }

@@ -17,6 +17,22 @@ const giveBooking = async(req: Request, res: Response) => {
     }
 }
 
+const showBookings = async(req: Request, res: Response) => {
+    try {
+        const result = await bookingService.serviceShowServices(req.userInfo);
+        res.status(200).send({
+            success: true, 
+            message: "Bookings retrieved successfully", 
+            data: result
+        })        
+    } catch(error: any) {
+        res.status(500).send({
+            success: false, 
+            message: error.message
+        })
+    }
+}
+
 export const bookingController = {
-    giveBooking
+    giveBooking, showBookings
 }
