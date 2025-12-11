@@ -5,6 +5,7 @@ import { initialDatabase } from "./config/db";
 import { authRouter } from "./modules/auth/auth.routes";
 import { auth } from "./middleware/auth";
 import { vehicleRouter } from "./modules/vehicle/vehicle.routes";
+import { bookingsRouter } from "./modules/bookings/bookings.routes";
 const app = express()
 const port = config.PORT
 
@@ -17,6 +18,7 @@ initialDatabase();
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/vehicles", vehicleRouter)
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/bookings", bookingsRouter);
 
 
 app.listen(port, () => {

@@ -36,8 +36,6 @@ const serviceUpdateUser = async(userId: number, payload: updatedUserPayload) => 
     query = query.slice(0, query.length - 2);
     query += ` WHERE id = $${index} RETURNING id, name, email, phone, role`;
 
-    console.log(query);
-
     const result = await pool.query(query, [...Object.values(payload), userId]);
     return result.rows;
 }   

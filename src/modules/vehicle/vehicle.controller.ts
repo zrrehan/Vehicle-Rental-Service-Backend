@@ -72,10 +72,10 @@ const deleteVehicle = async(req: Request, res: Response) => {
             message: "Vehicle deleted successfully"
         })
     } catch(error: any) {
-    res.status(500).send({
-                success: false, 
-                message: error.message
-            })
+        res.status(500).send({
+            success: false, 
+            message: error.message
+        })
     }
 }
 
