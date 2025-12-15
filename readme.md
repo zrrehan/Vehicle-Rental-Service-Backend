@@ -59,5 +59,23 @@ Live Deployment: https://car-service-backend-eight.vercel.app/
 - GET `/api/v1/bookings`
 - PUT `/api/v1/bookings/:bookingId`
 
+## How to Install
 
+```bash
+# Clone the repository
+git clone https://github.com/zrrehan/Vehicle-Rental-Service-Backend.git
 
+# Move into the project directory
+cd Vehicle-Rental-Service-Backend
+
+# Install dependencies
+npm install
+
+# Create a .env file and add the following variables
+PORT=your_port_number
+DB_CONNECTION_STRING=your_database_connection_string
+JWT_SECRET_KEY=your_jwt_secret_key
+
+# Start the server
+npm run dev
+```
