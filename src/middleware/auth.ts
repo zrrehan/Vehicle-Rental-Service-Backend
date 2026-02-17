@@ -11,7 +11,12 @@ export const auth = (roles: string[]) => {
         } else {
             return res.status(403).send({success: false, message: "You are not authorized"})
         }
-        const decodedToken = jwt.verify(token, config.JWT_SECRET_KEY as string) as JwtPayload;
+        let decodedToken;
+        try {
+            decodedToken = jwt.verify(token, config.JWT_SECRET_KEY as string) as JwtPayload;
+        } catch (error) {
+            return res.status(403).send({success: false, message: "You are not authorized"})
+        }
 
         if(roles.length) {
             if(!roles.includes(decodedToken.role)) {
