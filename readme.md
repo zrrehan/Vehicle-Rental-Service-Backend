@@ -2,7 +2,7 @@
 
 A backend service for managing vehicles, users, and bookings with secure authentication and role-based access.
 
-Live Deployment: https://car-service-backend-eight.vercel.app/
+Live Deployment: http://car-rental-service-server-ten.vercel.app/
 
 ## 🛠️ Tech Stack
 - TypeScript
@@ -38,6 +38,10 @@ Live Deployment: https://car-service-backend-eight.vercel.app/
 4. Role-based permissions enforced  
 
 ## 🌐 Main Endpoints
+
+> ⚡ **Jump to Detailed API Reference & Examples:** [Click Here](api_references.md) 📖
+
+
 ### Auth
 - POST `/api/v1/auth/signup`
 - POST `/api/v1/auth/signin`
