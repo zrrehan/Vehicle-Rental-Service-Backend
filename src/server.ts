@@ -20,6 +20,13 @@ app.use("/api/v1/vehicles", vehicleRouter)
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/bookings", bookingsRouter);
 
+app.get("/", (req: Request, res: Response) => {
+  res.send({
+    success: true, 
+    message: "Vehicle Renitng Server is Alive"
+  })
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
